@@ -28,6 +28,7 @@ export default function Main(props: CSVImporterProps) {
     onComplete,
     customStyles,
     showDownloadTemplateButton,
+    acceptedFileTypes,
     skipHeaderRowSelection,
   } = props;
   const skipHeader = skipHeaderRowSelection ?? false;
@@ -122,9 +123,12 @@ export default function Main(props: CSVImporterProps) {
             onSuccess={async (file: File) => {
               setDataError(null);
               const fileType = file.name.slice(file.name.lastIndexOf(".") + 1);
-              if (!["csv"].includes(fileType)) {
-                setDataError(t("Only CSV files can be uploaded"));
+              if (acceptedFileTypes && !acceptedFileTypes.includes(fileType)) {
+                const fileType =  acceptedFileTypes.toString();
+                setDataError(`Only ${fileType} files can be uploaded`);
                 return;
+              }else if(!["csv", "xls", "xlsx"].includes(fileType)) {
+                  setDataError(t("Only CSV, XLS, and XLSX files can be uploaded"));
               }
               const reader = new FileReader();
               const isNotBlankRow = (row: string[]) => row.some((cell) => cell.toString().trim() !== "");

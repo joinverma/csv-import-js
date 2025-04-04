@@ -8,6 +8,7 @@ declare const _default: import("@storybook/types").ComponentAnnotations<import("
     waitOnComplete?: boolean | undefined;
     customStyles?: string | Record<string, string> | undefined;
     showDownloadTemplateButton?: boolean | undefined;
+    acceptedFileTypes: string[];
     skipHeaderRowSelection?: boolean | undefined;
     language?: string | undefined;
     customTranslations?: import("i18next").Resource | undefined;
@@ -27,6 +28,7 @@ export declare const Importer: import("@storybook/types").AnnotatedStoryFn<impor
     waitOnComplete?: boolean | undefined;
     customStyles?: string | Record<string, string> | undefined;
     showDownloadTemplateButton?: boolean | undefined;
+    acceptedFileTypes: string[];
     skipHeaderRowSelection?: boolean | undefined;
     language?: string | undefined;
     customTranslations?: import("i18next").Resource | undefined;

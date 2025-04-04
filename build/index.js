@@ -50828,6 +50828,8 @@
           maxFiles: 1,
           // maxSize: 1 * Math.pow(1024, 3),
           accept: {
+              "application/vnd.ms-excel": [".xls"],
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
               "text/csv": [".csv"],
           },
           onDropRejected: function (fileRejections) {
@@ -50911,7 +50913,7 @@
 
   function Main(props) {
       var _this = this;
-      var _a = props.isModal, isModal = _a === void 0 ? true : _a, _b = props.modalOnCloseTriggered, modalOnCloseTriggered = _b === void 0 ? function () { return null; } : _b, template = props.template, onComplete = props.onComplete, customStyles = props.customStyles, showDownloadTemplateButton = props.showDownloadTemplateButton, skipHeaderRowSelection = props.skipHeaderRowSelection;
+      var _a = props.isModal, isModal = _a === void 0 ? true : _a, _b = props.modalOnCloseTriggered, modalOnCloseTriggered = _b === void 0 ? function () { return null; } : _b, template = props.template, onComplete = props.onComplete, customStyles = props.customStyles, showDownloadTemplateButton = props.showDownloadTemplateButton, acceptedFileTypes = props.acceptedFileTypes, skipHeaderRowSelection = props.skipHeaderRowSelection;
       var skipHeader = skipHeaderRowSelection !== null && skipHeaderRowSelection !== void 0 ? skipHeaderRowSelection : false;
       var t = useTranslation().t;
       // Apply custom styles
@@ -50978,14 +50980,18 @@
           switch (currentStep) {
               case StepEnum.Upload:
                   return (jsxRuntime.jsx(Uploader, { template: parsedTemplate, skipHeaderRowSelection: skipHeader || false, showDownloadTemplateButton: showDownloadTemplateButton, setDataError: setDataError, onSuccess: function (file) { return __awaiter(_this, void 0, void 0, function () {
-                          var fileType, reader, isNotBlankRow;
+                          var fileType, fileType_1, reader, isNotBlankRow;
                           var _this = this;
                           return __generator(this, function (_a) {
                               setDataError(null);
                               fileType = file.name.slice(file.name.lastIndexOf(".") + 1);
-                              if (!["csv"].includes(fileType)) {
-                                  setDataError(t("Only CSV files can be uploaded"));
+                              if (acceptedFileTypes && !acceptedFileTypes.includes(fileType)) {
+                                  fileType_1 = acceptedFileTypes.toString();
+                                  setDataError("Only ".concat(fileType_1, " files can be uploaded"));
                                   return [2 /*return*/];
+                              }
+                              else if (!["csv", "xls", "xlsx"].includes(fileType)) {
+                                  setDataError(t("Only CSV, XLS, and XLSX files can be uploaded"));
                               }
                               reader = new FileReader();
                               isNotBlankRow = function (row) { return row.some(function (cell) { return cell.toString().trim() !== ""; }); };
